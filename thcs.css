@@ -56,10 +56,19 @@
 .lop-hoc img {
     width: 250px;
     border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.lop-hoc i {
+    color: rgb(255, 230, 0);
 }
 
 .lop-hoc:hover,
 .quangcao:hover {
     transform: translateY(-5px);
     transition: transform 0.3s ease-in-out;
+}
+
+.thong-tin-lop-hoc {
+    margin-left: 5px;
 }
