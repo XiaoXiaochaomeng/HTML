@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="show.css">
+</head>
+
+<body>
+    <div class="container emp-profile">
+
+        <c:if test="${account.position == 'gv'}">
+            <h1>Lớp học của tôi</h1>
+            <hr>
+            <a href="/managerLopHoc?action=create" type="button" class="btn btn-success">Create</a>
+            <br>
+        </c:if>
+        <c:if test="${account.position == 'admin'}">
+            <h1>Quản Lý Lớp Học</h1>
+        </c:if>
+
+        <br>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="/managerLopHoc?lever=1">Tiểu Học</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="/managerLopHoc?lever=2">Trung Học</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="/managerLopHoc?lever=3">Trung Học Phổ Thông</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Tên Lớp Học</th>
+                        <th>Ngày tạo</th>
+                        <th>Học Phí</th>
+                        <th>Mô tả</th>
+                        <th>Tên Gia Sư</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="lh" items="${lopHocs}">
+                        <tr>
+                            <td>${lh.idLH}</td>
+                            <td>${lh.tenLH}</td>
+                            <td>${lh.getDateFormat()}</td>
+                            <td>${lh.hocphi}</td>
+                            <td>${lh.mota}</td>
+                            <td>${lh.giaSu.tenGS}</td>
+                            <td><a href="/managerLopHoc?action=edit&id=${lh.idLH}" type="button"
+                                    class="btn btn-warning">Edit</a></td>
+                            <td><a onclick="deleteLH(${lh.idLH})" type="button" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            <br>
+            <br>
+        </div>
+    </div>
+
+
+
+    </div>
+
+    <script>
+        function deleteLH(idLH) {
+            let check = confirm('Xóa lớp học!')
+            if (check) {
+                location.href = "/managerLopHoc?action=delete&id=" + idLH;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Lấy giá trị của tham số 'lever' từ URL
+            const urlParams = new URLSearchParams(window.location.search);
+            let leverParam = urlParams.get('lever');
+            if (leverParam == null) {
+                leverParam = "1";
+            }
+
+
+            // Lặp qua tất cả các thẻ 'a' trong danh sách và kiểm tra giá trị của 'href'
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach((link) => {
+                const href = link.getAttribute('href');
+
+                // Kiểm tra nếu giá trị 'href' chứa giá trị của 'lever' trong tham số
+                if (href.includes(leverParam)) {
+                    // Xóa lớp 'active' cho tất cả các thẻ 'a'
+                    navLinks.forEach((link) => {
+                        link.classList.remove('active');
+                    });
+
+                    // Đặt active cho thẻ 'a' tương ứng
+                    link.classList.add('active');
+                }
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>
